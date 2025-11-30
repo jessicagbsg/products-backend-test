@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { CartModule } from './cart/cart.module';
 
 @Module({
@@ -9,6 +11,16 @@ import { CartModule } from './cart/cart.module';
       isGlobal: true,
       envFilePath: '.env',
       ignoreEnvFile: false,
+    }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => [
+        {
+          ttl: configService.get<number>('THROTTLE_TTL', 60) * 1000,
+          limit: configService.get<number>('THROTTLE_LIMIT', 100),
+        },
+      ],
+      inject: [ConfigService],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -25,6 +37,12 @@ import { CartModule } from './cart/cart.module';
       inject: [ConfigService],
     }),
     CartModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}
