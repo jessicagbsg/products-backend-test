@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { CartModule } from './cart/cart.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CartModule } from './cart/cart.module';
       inject: [ConfigService],
     }),
     CartModule,
+    HealthModule,
   ],
   providers: [
     {

@@ -7,27 +7,51 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 import { CartItemDto } from './cart-item.dto';
 import { Type } from 'class-transformer';
 
 export class CartResponseDto {
+  @ApiProperty({
+    description: 'Unique shopping cart identifier',
+    example: 'cart-uuid-123',
+  })
   @IsString()
   shoppingCartId: string;
 
+  @ApiProperty({
+    description: 'User identifier',
+    example: 'user-123',
+  })
   @IsString()
   userId: string;
 
+  @ApiProperty({
+    description: 'Total price of all items in cart',
+    example: '534.00',
+    pattern: '^\\d+(\\.\\d{1,2})?$',
+  })
   @IsString()
   @Matches(/^\d+(\.\d{1,2})?$/, {
     message: 'totalPrice must be a valid number with up to 2 decimal places',
   })
   totalPrice: string;
 
+  @ApiProperty({
+    description: 'Total quantity of items in cart',
+    example: 2,
+    minimum: 0,
+    maximum: 1000000,
+  })
   @IsNumber()
   @Min(0)
   @Max(1000000)
   totalQuantity: number;
 
+  @ApiProperty({
+    description: 'List of items in the cart',
+    type: [CartItemDto],
+  })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CartItemDto)
