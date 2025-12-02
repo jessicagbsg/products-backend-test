@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 import { APP_GUARD } from '@nestjs/core';
+import { ProductsModule } from './products/products.module';
+import { CartModule } from './cart/cart.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { ProductsModule } from './products/products.module';
-import { HttpModule } from '@nestjs/axios';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ConfigModule } from '@nestjs/config';
     HealthModule,
     AuthModule,
     ProductsModule,
+    CartModule,
   ],
   providers: [
     {
