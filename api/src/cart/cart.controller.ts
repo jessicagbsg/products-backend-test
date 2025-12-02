@@ -5,6 +5,9 @@ import { CartItemDto } from './dto/cart-item.dto';
 import { ProductIdParam } from './dto/product-id-param.dto';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
+// In a production environment, I would apply the @ApiBearerAuth decorator only to
+// a "checkout" endpoint to allow the user to checkout without being authenticated,
+// and the other endpoints to be public.
 @Controller({ path: 'cart', version: '1' })
 export class CartController {
   constructor(private readonly cartService: CartService) {}
