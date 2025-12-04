@@ -1,7 +1,12 @@
-import { IsString, IsNotEmpty, Length, Matches } from 'class-validator';
+import { IsNotEmpty, IsString, Matches, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
 export class LoginDto {
+  @ApiProperty({
+    description: 'User identifier',
+    example: 'user-123',
+  })
   @IsString()
   @IsNotEmpty()
   @Length(1, 100, {
